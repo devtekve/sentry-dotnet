@@ -18,7 +18,7 @@ jobs:
       matrix:
         # Pin ubuntu to ensure mono is installed
         # Pin macos to get the version of Xcode that we need: https://github.com/actions/runner-images/issues/10703
-        os: [ubuntu-22.04, windows-latest, macos-15]
+        os: [ubuntu-22.04, windows-latest, macos-15, ubuntu-22.04-arm]
 
     steps:
       - name: Checkout
@@ -56,7 +56,7 @@ jobs:
       matrix:
         # Pin ubuntu to ensure mono is installed
         # Pin macos to get the version of Xcode that we need: https://github.com/actions/runner-images/issues/10703
-        os: [ubuntu-22.04, windows-latest, macos-15]
+        os: [ubuntu-22.04, windows-latest, macos-15, ubuntu-22.04-arm]
 
     steps:
       - name: Cancel Previous Runs
@@ -158,7 +158,7 @@ jobs:
       matrix:
         # Pin ubuntu to ensure mono is installed
         # Pin macos to get the version of Xcode that we need: https://github.com/actions/runner-images/issues/10703
-        os: [ubuntu-22.04, windows-latest, macos-15]
+        os: [ubuntu-22.04, windows-latest, macos-15, ubuntu-22.04-arm]
 
     steps:
       - uses: actions/checkout@v4
