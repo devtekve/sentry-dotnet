@@ -46,6 +46,12 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         shell: pwsh
 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sentry-native-${{ runner.os }}-${{ hashFiles('scripts/build-sentry-native.ps1') }}-${{ hashFiles('.git/modules/modules/sentry-native/HEAD') }}
+          path: src/Sentry/Platforms/Native/sentry-native
+
   build:
     needs: build-sentry-native
     name: .NET (${{ matrix.os }})
