@@ -18,7 +18,7 @@ jobs:
       matrix:
         # Pin ubuntu to ensure mono is installed
         # Pin macos to get the version of Xcode that we need: https://github.com/actions/runner-images/issues/10703
-        os: [ubuntu-22.04, windows-latest, macos-15]
+        os: [ubuntu-22.04, windows-latest, macos-15, ubuntu-22.04-arm]
 
     steps:
       - name: Checkout
@@ -30,7 +30,7 @@ jobs:
         id: cache
         with:
           path: src/Sentry/Platforms/Native/sentry-native
-          key: sentry-native-${{ runner.os }}-${{ hashFiles('scripts/build-sentry-native.ps1') }}-${{ hashFiles('.git/modules/modules/sentry-native/HEAD') }}
+          key: sentry-native-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/build-sentry-native.ps1') }}-${{ hashFiles('.git/modules/modules/sentry-native/HEAD') }}
           enableCrossOsArchive: true
 
       - name: Remove unused applications
@@ -46,6 +46,12 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         shell: pwsh
 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sentry-native-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/build-sentry-native.ps1') }}-${{ hashFiles('.git/modules/modules/sentry-native/HEAD') }}
+          path: src/Sentry/Platforms/Native/sentry-native
+
   build:
     needs: build-sentry-native
     name: .NET (${{ matrix.os }})
@@ -56,7 +62,7 @@ jobs:
       matrix:
         # Pin ubuntu to ensure mono is installed
         # Pin macos to get the version of Xcode that we need: https://github.com/actions/runner-images/issues/10703
-        os: [ubuntu-22.04, windows-latest, macos-15]
+        os: [ubuntu-22.04, windows-latest, macos-15, ubuntu-22.04-arm]
 
     steps:
       - name: Cancel Previous Runs
@@ -82,7 +88,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: src/Sentry/Platforms/Native/sentry-native
-          key: sentry-native-Linux-${{ hashFiles('scripts/build-sentry-native.ps1') }}-${{ hashFiles('.git/modules/modules/sentry-native/HEAD') }}
+          key: sentry-native-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/build-sentry-native.ps1') }}-${{ hashFiles('.git/modules/modules/sentry-native/HEAD') }}
           fail-on-cache-miss: true
 
       - name: Download sentry-native (macOS)
@@ -90,7 +96,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: src/Sentry/Platforms/Native/sentry-native
-          key: sentry-native-macOS-${{ hashFiles('scripts/build-sentry-native.ps1') }}-${{ hashFiles('.git/modules/modules/sentry-native/HEAD') }}
+          key: sentry-native-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/build-sentry-native.ps1') }}-${{ hashFiles('.git/modules/modules/sentry-native/HEAD') }}
           fail-on-cache-miss: true
 
       - name: Download sentry-native (Windows)
@@ -98,7 +104,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: src/Sentry/Platforms/Native/sentry-native
-          key: sentry-native-Windows-${{ hashFiles('scripts/build-sentry-native.ps1') }}-${{ hashFiles('.git/modules/modules/sentry-native/HEAD') }}
+          key: sentry-native-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/build-sentry-native.ps1') }}-${{ hashFiles('.git/modules/modules/sentry-native/HEAD') }}
           fail-on-cache-miss: true
           enableCrossOsArchive: true
 
@@ -158,7 +164,7 @@ jobs:
       matrix:
         # Pin ubuntu to ensure mono is installed
         # Pin macos to get the version of Xcode that we need: https://github.com/actions/runner-images/issues/10703
-        os: [ubuntu-22.04, windows-latest, macos-15]
+        os: [ubuntu-22.04, windows-latest, macos-15, ubuntu-22.04-arm]
 
     steps:
       - uses: actions/checkout@v4
