@@ -29,7 +29,8 @@ try
     }
     elseif ($IsLinux)
     {
-        $outDir += '/linux-x64'
+        $arch = & uname -m
+        $outDir += "/linux-$arch"
     }
     else
     {
